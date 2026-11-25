@@ -17,11 +17,12 @@
     "check": "biome check ./",
     "check:fix": "biome check --write ./",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
+    "test": "jest && npm run check:access",
     "test:watch": "jest --watchAll",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "prepare": "husky"
+    "prepare": "husky",
+    "check:access": "npx -y viberaven@latest check drizzle --quiet"
   },
   "husky": {
     "hooks": {
