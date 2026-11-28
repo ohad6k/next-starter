@@ -39,19 +39,27 @@ const webhookHandler = async (req: NextRequest) => {
           .set({ isActive: true })
           .where(eq(users.stripeCustomerId, subscription.customer as string));
         break;
+      case "customer.subscription.deleted":
+        await db
+          .update(users)
+          .set({ isActive: false })
+          .where(eq(users.stripeCustomerId, subscription.customer as string));
+        break;
       default:
         break;
     }
     return NextResponse.json({ received: true });
   } catch {
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         error: {
           message: "Method Not Allowed",
         },
       },
       { status: 405 },
-    ).headers.set("Allow", "POST");
+    );
+    response.headers.set("Allow", "POST");
+    return response;
   }
 };
 
